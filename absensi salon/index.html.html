@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Absensi Karyawan Salon</title>
+  <style>
+    body{
+        font-family: 'Segoe UI', sans-serif;
+      background-color: #fff0f5;
+      color: #333;
+      padding: 30px
+
+    }
+   
+    h1 {
+      text-align: center;
+      color: #c71585;
+    }
+    .form-container {
+      max-width: 400px;
+      margin: auto;
+      background: #ffe4e1;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+    input[type="text"] {
+      width: 100%;
+      padding: 10px;
+      border: none;
+      border-radius: 8px;
+      margin-bottom: 10px;
+    }
+    button {
+      width: 100%;
+      background-color: #db7093;
+      color: white;
+      padding: 10px;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #c71585;
+    }
+    .absen-list {
+      margin-top: 30px;
+    }
+    .absen-item {
+      background: white;
+      padding: 10px;
+      border-radius: 8px;
+      margin-bottom: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    }
+  </style>
+</head>
+<body>
+    <div class="logo-fixed">
+        <img src="foto1.jpg" alt="Logo Salon" />
+      </div>
+<style>
+    .logo-fixed {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 999;
+}
+
+.logo-fixed img {
+  width: 30px;
+  height: auto;
+  border-radius: 50%;
+}
+h1 {
+  text-align: center;
+  color: #c71585;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.logo-fixed img {
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+</style>
+
+<body>
+
+  <h1>💼 Absensi Karyawan Salon</h1>
+  <div class="form-container">
+    <input type="text" id="nama" placeholder="Masukkan nama karyawan" />
+    <button onclick="absen()">Hadir Sekarang</button>
+    <button onclick="downloadExcel()">Download Excel</button>
+
+    <div class="absen-list" id="absenList" style="display: none;">
+      <!-- Daftar absen muncul di sini -->
+    </div>
+  
+  <script>
+    const namaInput = document.getElementById("nama");
+    const absenList = document.getElementById("absenList");
+
+    function absen() {
+      const nama = namaInput.value.trim();
+      if (nama === "") {
+        alert("Nama tidak boleh kosong!");
+        return;
+      }
+
+      const now = new Date();
+      const waktu = now.toLocaleString("id-ID");
+
+      const entry = {
+        nama: nama,
+        waktu: waktu
+      };
+
+      let data = JSON.parse(localStorage.getItem("absensiSalon")) || [];
+      data.push(entry);
+      localStorage.setItem("absensiSalon", JSON.stringify(data));
+      namaInput.value = "";
+      tampilkanAbsensi();
+    
+    }
+    
+
+    function downloadExcel() {
+  const dataAbsen = JSON.parse(localStorage.getItem("absensiSalon")) || [];
+
+  if (dataAbsen.length === 0) {
+    alert("Belum ada data absensi.");
+    return;
+  }
+
+  let csvContent = "data:text/csv;charset=utf-8,";
+  csvContent += "Nama;Waktu\n";
+
+  dataAbsen.forEach((item) => {
+    csvContent += `${item.nama};${item.waktu}\n`;
+  });
+
+  const encodedUri = encodeURI(csvContent);
+  const link = document.createElement("a");
+  link.setAttribute("href", encodedUri);
+  link.setAttribute("download", "absensi_karyawan.csv");
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+}
+
+    // tampilkan data saat halaman dibuka
+    tampilkanAbsensi();
+
+  </script>
+
+</body>
+
+</html>
+<footer style="text-align:center; margin-top:40px; color:#c71585;">
+    © 2025 Diora Hair Studio 💖
+  </footer>
+  
+</html>
+
+<style>
+    .form-container {
+  animation: fadeIn 1s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+</style>
+    
+
+
+
